@@ -1,0 +1,17 @@
+Lesson 1...
+Chapter 1. To make a runable program using terminal:
+
+g++ -std=c++0x helloWoeld.cpp -o example_program
+
+to run:
+
+./example_program
+
+
+Chapter 2. Variables and types :  char (least 8 bits), int (least 8 bits){short 16 bits, long 32, long long 64},float (32 bits, long 64 bits), boolean
+
+1 byte = 8 bits = 8 bits have 2^8 notes = 256 unique re-presentable values.
+Signed/Unsigned Variable Type of Integer:
+An unsigned variable type of int can hold zero and positive numbers, and a signed int holds negative, zero and positive numbers.
+
+In 32-bit integers, an unsigned integer has a range of 0 to 232-1 = 0 to 4,294,967,295 or about 4 billion. The signed version goes from -231-1 to 231, which is 
