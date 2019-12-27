@@ -1,3 +1,4 @@
+
 Lesson 1...
 Chapter 1. To make a runable program using terminal:
 
@@ -14,4 +15,363 @@ Chapter 2. Variables and types :  char (least 8 bits), int (least 8 bits){short 
 Signed/Unsigned Variable Type of Integer:
 An unsigned variable type of int can hold zero and positive numbers, and a signed int holds negative, zero and positive numbers.
 
-In 32-bit integers, an unsigned integer has a range of 0 to 232-1 = 0 to 4,294,967,295 or about 4 billion. The signed version goes from -231-1 to 231, which is 
+In 32-bit integers, an unsigned integer has a range of 0 to (232-1) = 0 to 4,294,967,295 or about 4 billion. The signed version goes from (-231-1) to 231,
+which is (-2,147,483,648 to 2,147,483,647) or about -2 billion to +2 billion. The range is the same, but it is shifted on the number line.
+
+An int type in C, C++, and C# is signed by default. If negative numbers are involved, the int must be signed;
+ an unsigned int cannot represent a negative number.
+
+Unsigned Char
+In the case of chars, which are only 1 byte, the range of an unsigned char is 0 to 256, while the range of a signed char is -127 to 127.
+
+
+Boolean type	bool
+Void type	void	no storage
+Null pointer	decltype(nullptr)
+
+Initialization of variables:
+3 different types :
+ 1) c-like initialization  : type identifier = initial_value; eg: int x = 0;
+ 2) constructor initialization  : type identifier (initial_value); eg int x(0);
+ 3) uniform initialization : type identifier {initial_value}; eg: int x{0};
+
+
+ Type deduction: auto and decltype:
+ When a new variable is initialized, the compiler can figure out what the type of the variable is automatically by the initializer.
+ For this, it suffices to use auto as the type specifier for the variable:
+
+ int foo = 0;
+ auto bar = foo;  // the same as: int bar = foo;
+
+ Variables that are not initialized can also make use of type deduction with the decltype specifier:
+ int foo = 0;
+ decltype(foo) bar;  // the same as: int bar;
+
+An example of compound type is the string class.
+
+Chapter 3 Constants :
+1) Literals : a = 5; 5 is Literal constant,
+Literal constants can be classified into: integer, floating-point, characters, strings, Boolean, pointers, and user-defined literals.
+
+2) Integer Numerals
+
+x = "string expressed in \
+two lines"
+
+
+bool foo = true;
+bool bar = false;
+int* p = nullptr;
+
+
+const double pi = 3.1415926;
+const char tab = '\t';
+cons char newline = '\n'
+
+Another mechanism to name constant values is the use of preprocessor definitions. They have the following form:
+
+#define identifier replacement         // do not require semicolons (;)
+
+#define PI 3.14159
+#define NEWLINE '\n'
+
+
+
+Chapter 4 Operators:
+1) Assignment operator (=)   eg. x = 5; // always takes place from right to left, and never the other way around. x = y;
+y = 2 + (x = 5); // x = 5; y = 2 + x; jasty ho.
+x = y = z = 5;
+
+2) Arithmetic operators ( +, -, *, /, % ) // %), gives the remainder of a division of two values.
+
+3) Compound assignment (+=, -=, *=, /=, %=, >>=, <<=, &=, ^=, |=)
+
+4) Increment and decrement (++, --)
+++x;
+x+=1;
+x=x+1;
+
+5) Relational and comparison operators ( ==, !=, >, <, >=, <= )
+
+6)Logical operators ( !, &&, || ) ~ (NOT, AND, OR)
+!(5 == 5)   // evaluates to false because the expression at its right (5 == 5) is true
+!(6 <= 4)   // evaluates to true because (6 <= 4) would be false
+!true       // evaluates to false
+!false      // evaluates to true
+
+( (5 == 5) && (3 > 6) )  // evaluates to false ( true && false )
+( (5 == 5) || (3 > 6) )  // evaluates to true ( true || false )
+When using the logical operators, C++ only evaluates what is necessary from left to right to come up with the
+combined relational result, ignoring the rest. Therefore, in the last example ((5==5)||(3>6)),
+ C++ evaluates first whether 5==5 is true,
+and if so, it never checks whether 3>6 is true or not. This is known as short-circuit evaluation.
+
+7) Conditional ternary operator ( ? )
+condition ? result1 : result2
+If condition is true, the entire expression evaluates to result1, and otherwise to result2.
+
+7==5 ? 4 : 3     // evaluates to 3, since 7 is not equal to 5.
+7==5+2 ? 4 : 3   // evaluates to 4, since 7 is equal to 5+2.
+5>3 ? a : b      // evaluates to the value of a, since 5 is greater than 3.
+a>b ? a : b      // evaluates to whichever is greater, a or b.
+
+8) Comma operator ( , )
+a = (b=3, b+2);
+would first assign the value 3 to b, and then assign b+2 to variable a.
+So, at the end, variable a would contain the value 5 while variable b would contain value 3.
+
+9) Bitwise operators ( &, |, ^, ~, <<, >> )
+10) Explicit type casting operator
+11) sizeof: eg.   	x = sizeof (char);
+12) Later in these tutorials, we will see a few more operators,
+ like the ones referring to pointers or the specifics for object-oriented programming.
+
+Chapter 5: Basic Input Output:
+
+#include <iostream>
+
+cin	standard input stream :
+ int age;
+ cin >> age;
+
+cout 	standard output stream : cout << "Output sentence"; // prints Output sentence on screen
+cout << "Hello";  // prints Hello
+cout << Hello;    // prints the content of variable Hello
+
+cerr	standard error (output) stream
+clog	standard logging (output) stream
+
+Lesson 2...
+Chapter 1: Statements and flow control
+1) Selection statements: if and else
+if (condition) statement
+eg:
+if (x > 0)
+  cout << "x is positive";
+else if (x < 0)
+  cout << "x is negative";
+else
+  cout << "x is 0";
+
+2) Iteration statements (loops)
+
+The while loop
+while (expression) statement;
+The do while loop
+do statement while (condition);
+
+The for loop
+for (initialization; condition; increase) statement;
+
+for loop lai yesari pani use garna milchha:
+for ( n=0, i=100 ; n!=i ; ++n, --i )
+{
+   // whatever here...
+}
+The for-loop has another syntax, which is used exclusively with ranges:
+
+for ( declaration : range ) statement;
+
+This kind of for loop iterates over all the elements in range,
+ where declaration declares some variable able to take the value of an element in this range.
+ Ranges are sequences of elements, including arrays, containers, and any other type supporting the functions begin and end;
+
+3)Jump statements
+Jump statements allow altering the flow of a program by performing jumps to specific locations.
+
+ * The break statement
+ * goto statement
+ int n=10;
+mylabel:
+ cout << n << ", ";
+ n--;
+ if (n>0) goto mylabel;
+ cout << "liftoff!\n";           // not used much in modern era
+
+ 3) Another selection statement: switch.
+ switch (expression)
+ {
+   case constant1:
+      group-of-statements-1;
+      break;
+   case constant2:
+      group-of-statements-2;
+      break;
+   .
+   .
+   .
+   default:
+      default-group-of-statements
+ }
+
+ It works in the following way: switch evaluates expression and checks if it is equivalent to constant1;
+  if it is, it executes group-of-statements-1 until it finds the break statement. When it finds this break statement,
+ the program jumps to the end of the entire switch statement (the closing brace).
+
+ Notice that switch is limited to compare its evaluated expression against labels that are constant expressions.
+It is not possible to use variables as labels or ranges, because they are not valid C++ constant expressions.
+To check for ranges or values that are not constant, it is better to use concatenations of if and else if statements.
+
+Chapter 2: Functions:
+type name ( parameter1, parameter2, ...) { statements }
+ Each parameter looks very much like a regular variable declaration (for example: int x).
+ statements is the function's body. It is a block of statements surrounded by braces { } that specify what the function actually does.
+
+
+ The program in function.cpp is divided in two functions: pythagoras_theorem and main.
+  Remember that no matter the order in which they are defined, a C++ program always starts by calling main.
+
+  A function can actually be called multiple times within a program, and its argument is naturally not limited just to literals:
+
+* Functions with no type. The use of void
+* The return value of main : return(0); \\ aaru function ma return 0 lekhyo bhane 0 return garchh. but
+  main function ma return 0; le just function successfuly exicute bhayo bhanera bujhinchha.
+
+* Arguments passed by value and by reference
+In certain cases, though, it may be useful to access an external variable from within a function.
+ To do that, arguments can be passed by reference, instead of by value.
+To gain access to its arguments, the function declares its parameters as references.
+In C++, references are indicated with an ampersand (&) following the parameter type,
+ as in the parameters taken by duplicate in the example below.
+ void duplicate (int& a, int& b, int& c) // yesto & sagy argument linu lai reference bhaninchha.
+ \\references are indicated with an ampersand (&) following the parameter type,
+{
+  a*=2;
+  b*=2;
+  c*=2;
+}
+
+int main ()
+{
+  int x=1, y=3, z=7;
+  duplicate (x, y, z);
+  cout << "x=" << x << ", y=" << y << ", z=" << z;
+  return 0;
+}
+When a variable is passed by reference, what is passed is no longer a copy, but the variable itself,
+If instead of defining duplicate as:
+void duplicate (int& a, int& b, int& c)
+Was it to be defined without the ampersand signs as:
+void duplicate (int a, int b, int c)
+The variables would not be passed by reference, but by value, creating instead copies of their values.
+ In this case, the output of the program would have been the values of x, y, and z without being modified (i.e., 1, 3, and 7).
+
+* Efficiency considerations and const references
+Copy can be avoided altogether if parameters are made references:
+On the flip side, functions with reference parameters are generally perceived as functions that modify the arguments passed,
+ because that is why reference parameters are actually for.
+The solution is for the function to guarantee that its reference parameters are not going to be modified by this function.
+This can be done by qualifying the parameters as constant:
+
+string concatenate (const string& a, const string& b)
+{
+  return a+b;
+}
+
+* Inline functions
+Calling a function generally causes a certain overhead (stacking arguments, jumps, etc...), and thus for very short functions,
+it may be more efficient to simply insert the code of the function where it is called,
+instead of performing the process of formally calling a function.
+inline string concatenate (const string& a, const string& b)
+{
+  return a+b;
+}
+Why to use inline:
+In many places we create the functions for small work/functionality which contain simple and less number of executable instruction.
+Imagine their calling overhead each time they are being called by callers. When a normal function call instruction is encountered,
+the program stores the memory address of the instructions immediately following the function call statement, loads the function being
+called into the memory, copies argument values, jumps to the memory location of the called function, executes the function codes,
+stores the return value of the function, and then jumps back to the address of the instruction that was saved just before executing
+the called function. Too much run time overhead. The C++ inline function provides an alternative. With inline keyword, the compiler
+replaces the function call statement with the function code itself (process called expansion) and then compiles the entire code.
+Thus, with inline functions, the compiler does not have to jump to another location to execute the function, and then jump back as
+the code of the called function is already available to the calling program.
+
+*Default values in parameters
+In C++, functions can also have optional parameters, for which no arguments are required in the call,
+ in such a way that, for example, a function with three parameters may be called with only two. For this,
+the function shall include a default value for its last parameter,
+ which is used by the function when called with fewer arguments.
+
+int divide (int a, int b=2)  // b =2 default value
+cout << divide (12) << '\n';
+ cout << divide (20,4) << '\n';
+
+ * Declaring functions
+Functions cannot be called before they are declared. // like other variables.
+The prototype of a function can be declared without actually defining the function completely,
+ giving just enough details to allow the types involved in a function call to be known.
+// 2 tarikale
+ int protofunction (int first, int second);
+ int protofunction (int, int);
+
+*Recursivity
+Recursivity is the property that functions have to be called by themselves.
+It is useful for some tasks, such as sorting elements, or calculating the factorial of numbers.
+
+
+Chapter 2: Overloads and templates
+int operate_ (int a, int b)
+double operate_ (double a, double b)
+
+Two overloaded functions (i.e., two functions with the same name) have entirely different definitions; they are, for all purposes,
+ different functions, that only happen to have the same name. Note that a function cannot be overloaded only by its return type.
+  At least one of its parameters must have a different type.
+
+* Function templates
+template <class T>  // template <class SomeType>
+T sum (T a, T b)  //SomeType sum (SomeType a, SomeType b)
+
+{
+  T result;
+  result = a + b;
+  return result;
+}
+
+* Non-type template arguments
+The template parameters can not only include types introduced by class or typename,
+ but can also include expressions of a particular type:
+
+
+Chapter 3: Name visibility
+* Scopes:
+Variables with block scope are known as local variables.
+An entity declared outside any block has global scope, meaning that its name is valid anywhere in the code.
+
+* Namespaces
+But non-local names bring more possibilities for name collision, especially considering that libraries may declare many functions,
+types, and variables, neither of them local in nature, and some of them very generic.
+
+Namespaces allow us to group named entities that otherwise would have global scope into narrower scopes,
+giving them namespace scope. This allows organizing the elements of programs into different logical scopes referred to by names.
+
+namespace identifier // namespace mynamespace;
+{
+  named_entities // int a, b;
+}
+These variables can be accessed from within their namespace normally, with their identifier (either a or b),
+but if accessed from outside the myNamespace namespace they have to be properly qualified with the scope operator ::
+myNamespace::a
+
+* using
+The keyword using introduces a name into the current declarative region (such as a block),
+thus avoiding the need to qualify the name.
+
+* Namespace aliasing
+Existing namespaces can be aliased with new names, with the following syntax:
+namespace new_name = current_name;
+
+*The std namespace
+All the entities (variables, types, constants, and functions) of the standard C++ library are declared within
+ the std namespace. Most examples in these tutorials, in fact, include the following line:
+
+using namespace std;
+This introduces direct visibility of all the names of the std namespace into the code.
+for cout many programmer prefer std::cout
+
+*Storage classes
+there is another substantial difference between variables with static storage and variables with automatic storage:
+- Variables with static storage (such as global variables) that are not explicitly initialized are automatically
+  initialized to zeroes.
+- Variables with automatic storage (such as local variables) that are not explicitly initialized are left uninitialized,
+  and thus have an undetermined value.

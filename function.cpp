@@ -26,6 +26,7 @@ long factorial(int a) {
   else
     return 1;
 }
+
 // declaring functions prototypes
 void odd(int x);
 void even(int x);
@@ -55,6 +56,7 @@ int main() {
     cin >> i;
     odd(i);
   } while (i != 0);
+
   return 0;
 }
 
