@@ -375,3 +375,645 @@ there is another substantial difference between variables with static storage an
   initialized to zeroes.
 - Variables with automatic storage (such as local variables) that are not explicitly initialized are left uninitialized,
   and thus have an undetermined value.
+
+
+Lesson 3 ..Arrays
+1.
+An array is a series of elements of the same type placed in contiguous memory locations that can be individually
+referenced by adding an index to a unique identifier.
+
+type name [elements];
+where type is a valid type (such as int, float...), name is a valid identifier and the elements field
+(which is always enclosed in square brackets []), specifies the length of the array in terms of the number of elements.
+eg:
+int foo [5];
+NOTE: The elements field within square brackets [], representing the number of elements in the array, must be a constant expression,
+ since arrays are blocks of static memory whose size must be determined at compile time, before the program runs.
+
+* Initializing arrays
+int foo [5] = { 16, 2, 77, 40, 12071 }; // using { } brackets and , in between
+here if we give just 3 values If declared with less, the remaining elements are set to their default
+values (which for fundamental types, means they are filled with zeroes).
+Also:
+int foo [] = { 16, 2, 77, 40, 12071 }; // living [] empty
+After this declaration, array foo would be 5 int long, since we have provided 5 initialization values.
+Finally, the evolution of C++ has led to the adoption of universal initialization also for arrays. Therefore,
+there is no longer need for the equal sign between the declaration and the initializer. Both these statements are equivalent:
+int foo[] = { 10, 20, 30 };
+int foo[] { 10, 20, 30 };
+
+* Accessing the values of an array
+name[index] = value;
+foo [2] = 75;
+and, for example, the following copies the value of the third element of foo to a variable called x:
+x = foo[2];
+Two use of []:
+int foo[5];         // declaration of a new array
+foo[2] = 75;        // access to an element of the array.
+
+* Multidimensional arrays
+Multidimensional arrays can be described as "arrays of arrays".
+int multi_arr [m][n]...; // m, n... are dimensions
+char century [100][365][24][60][60];
+declares an array with an element of type char for each second in a century. This amounts to more than 3 billion char!
+So this declaration would consume more than 3 gigabytes of memory!
+
+At the end, multidimensional arrays are just an abstraction for programmers,
+since the same results can be achieved with a simple array, by multiplying its indices:
+int jimmy [3][5];   // is equivalent to
+int jimmy [15];     // (3 * 5 = 15)
+
+* Arrays as parameters
+To accept an array as parameter for a function, the parameters can be declared as the array type,
+but with empty brackets, omitting the actual size of the array. For example:
+void procedure (int arg[])
+This function accepts a parameter of type "array of int" called arg. In order to pass to this function an array declared as:
+int myarray [40];
+it would be enough to write a call like this:
+procedure (myarray);
+
+A function with a multidimensional array as argument could be:
+void procedure (int myarray[][3][4])
+Notice that the first brackets [] are left empty,
+In a way, passing an array as argument always loses a dimension. The reason behind is that,
+for historical reasons, arrays cannot be directly copied, and thus what is really passed is a pointer.
+This is a common source of errors for novice programmers.
+
+* Library arrays
+
+2. Character sequences:
+char foo [20];
+
+By convention, the end of strings represented in character sequences is signaled by a special character:
+ the null character, whose literal value can be written as '\0' (backslash, zero).
+The array of 20 elements of type char called foo can be represented storing the
+ character sequences "Hello" and "Merry Christmas".
+
+* Initialization of null-terminated character sequences
+The array of char elements called myword can be initialized with a null-terminated sequence of characters
+ by either one of these two statements:
+char myword[] = { 'H', 'e', 'l', 'l', 'o', '\0' };
+char myword[] = "Hello";
+elements changing can be done as follow:
+myword[0] = 'B';
+myword[1] = 'y';
+myword[2] = 'e';
+myword[3] = '\0';
+
+* Strings(class string) and null-terminated character sequences(C-string)
+
+Strings are simply strings, no size is specified. This is due to the fact that strings have a dynamic size
+determined during runtime, while the size of arrays is determined on compilation, before the program runs.
+
+It is easy to convert from one another.
+char myntcs[] = "some text";
+string mystring = myntcs;  // convert c-string to string
+cout << mystring;          // printed as a library string
+cout << mystring.c_str();  // printed as a c-string
+
+
+3. Pointers
+In earlier chapters, variables have been explained as locations in the computer's memory which can be accessed
+ by their identifier (their name). This way, the program does not need to care about the physical address of
+ the data in memory; it simply uses the identifier whenever it needs to refer to the variable.
+
+* Address-of operator (&)
+The address of a variable can be obtained by preceding the name of a variable with an ampersand sign (&),
+known as address-of operator. For example:
+foo = &myvar;
+This would assign the address of variable myvar to foo; by preceding the name of the variable myvar
+with the address-of operator (&), we are no longer assigning the content of the variable itself to foo, but its address.
+
+myvar = 25;
+foo = &myvar; // foo is location of memory address , eg 1776
+bar = myvar; // it will result  bar = 25 here.
+
+The variable that stores the address of another variable (eg: foo ) is what in C++ is called a pointer.
+ Pointers are said to "point to" the variable whose address they store.
+
+* Dereference operator (*)
+An interesting property of pointers is that they can be used to access the variable they point to directly. This is done
+by preceding the pointer name with the dereference operator (*). The operator itself can be read as "value pointed to by".
+
+baz = *foo; // read as : baz equal to value pointed to by foo = myvar = 25 (in above example)
+Note the difference:
+baz = foo;   // baz equal to foo (1776)
+baz = *foo;  // baz equal to value pointed to by foo (25)
+1) & is the address-of operator, and can be read simply as "address of"
+2) * is the dereference operator, and can be read as "value pointed to by"
+
+* Declaring pointers
+Due to the ability of a pointer to directly refer to the value that it points to, a pointer has differen properties
+when it points to a char than when it points to an int or a float. Once dereferenced, the type needs to be known.
+And for that, the declaration of a pointer needs to include the data type the pointer is going to point to.
+
+type * name
+eg:
+int * number; // number is a pointer like foo which points to the address where some integer is stored
+char * character;
+double * decimals;
+Here the asterisk (*) used when declaring a pointer only means that it is a pointer, it is not a dereference operator.
+They are simply two different things represented with the same sign.
+
+int * p1, * p2; // you have to write * before every pointer. If not it will be just a normal variable.
+
+* Pointers and arrays
+The concept of arrays is related to that of pointers. In fact, arrays work very much like pointers to their first elements,
+and, actually, an array can always be implicitly converted to the pointer of the proper type.
+For example, consider these two declarations:
+int myarray [20]; // [] is called offset operator
+int * mypointer;
+The following assignment operation would be valid:
+mypointer = myarray;
+After that, mypointer and myarray would be equivalent and would have very similar properties.
+ The main difference being that mypointer can be assigned a different address, whereas myarray can never be assigned anything,
+ and will always represent the same block of 20 elements of type int. Therefore, the following assignment would not be valid:
+myarray = mypointer;
+following are same:
+a[5] = 90;       // a [offset of 5] = 0
+*(a+5) = 90;     // pointed to by (a+5) = 0
+ Remember that if an array, its name can be used just like a pointer to its first element.
+
+
+*Pointer initialization
+int myvar;
+int * myptr = &myvar;
+or
+int myvar;
+int * myptr;
+myptr = &myvar;
+
+* Pointer arithmetics
+Only addition and subtraction operations are allowed; the others make no sense in the world of pointers
+
+*p++   // same as *(p++): increment pointer, and dereference unincremented address
+*++p   // same as *(++p): increment pointer, and dereference incremented address
+++*p   // same as ++(*p): dereference pointer, and increment the value it points to
+(*p)++ // dereference pointer, and post-increment the value it points to
+
+
+Because ++ has a higher precedence than *
+*p++ = *q++; is equivalent to
+*p = *q;
+++p;
+++q;
+
+Pointers and const
+Pointers can be used to access a variable by its address, and this access may include modifying the value pointed.
+But it is also possible to declare pointers that can access the pointed value to read it, but not to modify it.
+
+int x;
+int y = 10;
+const int * p = &y;
+x = *p;          // ok: reading p
+*p = x;          // error: modifying p, which is const-qualified
+
+a pointer to non-const can be implicitly converted to a pointer to const. But not the other way around!
+ Pointers can also be themselves const. And this is specified by appending const to the pointed type (after the asterisk
+int x;
+      int *       p1 = &x;  // non-const pointer to non-const int
+const int *       p2 = &x;  // non-const pointer to const int
+      int * const p3 = &x;  // const pointer to non-const int
+const int * const p4 = &x;  // const pointer to const int
+
+const int * p2a = &x;  //      non-const pointer to const int
+int const * p2b = &x;  // also non-const pointer to const int
+
+* Pointers and string literals
+const char * foo = "hello"; // foo is pointer and also array of string
+This declares an array with the literal representation for "hello", and then a pointer to its first element is assigned to foo.
+Here pointer foo contains the address of 'h' or 'hello' but not themselves. to get those characters we can use:
+*(foo+4) // using pointer
+foo[4] // using array
+will be 'o'.
+
+*Pointers to pointers
+C++ allows the use of pointers that point to pointers, that these, in its turn, point to data (or even to other pointers).
+The syntax simply requires an asterisk (*) for each level of indirection in the declaration of the pointer:
+char a; // declaring a char variable a
+char * b; // Declaring a pointer b which points to a char variable
+char ** c; // Declaring another pointer c which points to a pointer b
+a = 'z';  // assigning z to variable a
+b = &a; // assigning address of a to pointer b
+c = &b; // assigning address of pointer b to pointer c
+
+c is of type char** and a value of 8092  // considering b is at address 8092 but b points to (contains) address of a
+*c is of type char* and a value of 7230  // considering a is at address 7230
+**c is of type char and a value of 'z'
+
+* void pointers
+void pointers are pointers that point to a value that has no type
+(and thus also an undetermined length and undetermined dereferencing properties).
+
+* Invalid pointers and null pointers
+pointers can actually point to any address, including addresses that do not refer to any valid element.
+Typical examples of this are uninitialized pointers and pointers to nonexistent elements of an array:
+
+int * p;               // uninitialized pointer (local variable)
+int myarray[10];
+int * q = myarray+20;  // element out of bounds
+
+sometimes, a pointer really needs to explicitly point to nowhere, and not just an invalid address.
+For such cases, there exists a special value that any pointer type can take: the null pointer value.
+This value can be expressed in C++ in two ways: either with an integer value of zero, or with the nullptr keyword:
+
+int * p = 0;
+int * q = nullptr;
+
+* Pointers to functions
+
+4. Dynamic memory
+when the memory needed depends on user input. On these cases, programs need to dynamically allocate memory,
+for which the C++ language integrates the operators new and delete.
+
+* Operators new and new[]:
+
+pointer = new type
+pointer = new type [number_of_elements]
+
+int * foo;
+foo = new int [5];
+In this case, the system dynamically allocates space for five elements of type int and returns a pointer
+ to the first element of the sequence, which is assigned to foo (a pointer).
+Therefore, foo now points to a valid block of memory with space for five elements of type int.
+
+* Operators delete and delete[]
+In most cases, memory allocated dynamically is only needed during specific periods of time within a program;
+ once it is no longer needed, it can be freed so that the memory becomes available again for other requests
+ of dynamic memory. This is the purpose of operator delete, whose syntax is:
+delete pointer;
+delete[] pointer;
+
+* Dynamic memory in C
+
+5. Data Structures
+We have different type of data, int, float, double,char and so on. But if we want to create one new
+date type our-self, struct is useful.
+A data structure is a group of data elements grouped together under one name. These data elements,
+ known as members, can have different types and different lengths. Data structures can be declared
+ in C++ using the following syntax:
+
+struct type_name {
+member_type1 member_name1;
+member_type2 member_name2;
+member_type3 member_name3;
+.
+.
+} object_names;
+
+Where type_name is a name for the structure type, object_name can be a set of valid identifiers for objects
+that have the type of this structure. Within braces {}, there is a list with the data members,
+ each one is specified with a type and a valid identifier as its name.
+ struct product {
+   int weight;
+   double price;
+ } ;
+
+ product apple;
+ product banana, melon;
+
+ or
+ struct product {
+  int weight;
+  double price;
+} apple, banana, melon;
+
+ its members can be accessed directly.
+  The syntax for that is simply to insert a dot (.) between the object name and the member name.
+apple.weight
+apple.price
+banana.weight
+banana.price
+melon.weight
+melon.price
+
+This declares a structure type, called product, and defines it having two members: weight and price, each of a different
+fundamental type. This declaration creates a new type (product), which is then used to declare three objects (variables)
+ of this type: apple, banana, and melon. Note how once product is declared, it is used just like any other type.
+
+*Pointers to structures
+struct movies_t {
+  string title;
+  int year;
+};
+
+movies_t amovie;
+movies_t * pmovie;
+Here amovie is an object of structure type movies_t, and pmovie is a pointer to point to objects of structure type movies_t.
+Therefore, the following code would also be valid:
+pmovie = &amovie;
+The value of the pointer pmovie would be assigned the address of object amovie.
+The arrow operator (->) is a dereference operator that is used exclusively with pointers to objects that have members.
+This operator serves to access the member of an object directly from its address. For example, in the example above:
+pmovie->title
+
+is, for all purposes, equivalent to:
+(*pmovie).title
+
+a.b	Member b of object a
+a->b	Member b of object pointed to by a	(*a).b
+*a.b	Value pointed to by member b of object a	*(a.b)
+
+*Nesting structures
+Structures can also be nested in such a way that an element of a structure is itself another structure:
+
+struct movies_t {
+  string title;
+  int year;
+};
+
+struct friends_t {
+  string name;
+  string email;
+  movies_t favorite_movie;
+} charlie, maria;
+
+friends_t * pfriends = &charlie;
+
+After the previous declarations, all of the following expressions would be valid:
+charlie.name
+maria.favorite_movie.title
+charlie.favorite_movie.year
+pfriends->favorite_movie.year
+
+6. Other data types
+Enumerated types (enum)
+enum type_name {
+  value1,
+  value2,
+  value3,
+  .
+  .
+} object_names;
+
+enum colors_t {black, blue, green, cyan, red, purple, yellow, white};
+colors_t mycolor;
+
+mycolor = blue;
+if (mycolor == green) mycolor = red;
+ If it is not specified otherwise, the integer value equivalent to the first possible value is 0,
+  the equivalent to the second is 1, to the third is 2,
+
+  A specific integer value can be specified for any of the possible values in the enumerated type.
+  And if the constant value that follows it is itself not given its own value, it is automatically
+  assumed to be the same value plus one. For example:
+
+  enum months_t { january=1, february, march, april,
+                  may, june, july, august,
+                  september, october, november, december} y2k;
+
+
+*Enumerated types with enum class
+But, in C++, it is possible to create real enum types that are neither implicitly convertible to int
+and that neither have enumerator values of type int, but of the enum type itself, thus preserving type safety.
+They are declared with enum class (or enum struct) instead of just enum:
+
+enum class Colors {black, blue, green, cyan, red, purple, yellow, white};
+Colors mycolor;
+
+mycolor = Colors::blue;
+if (mycolor == Colors::green) mycolor = Colors::red;
+
+Enumerated types declared with enum class also have more control over their underlying type;
+enum class EyeColor : char {blue, green, brown};
+
+*Type aliases (typedef / using)
+
+A type alias is a different name by which a type can be identified. In C++, any valid type can be aliased.
+
+typedef existing_type new_type_name ;
+
+typedef char C;
+typedef unsigned int WORD;
+typedef char * pChar;
+typedef char field [50];
+
+using new_type_name = existing_type ;
+using C = char;
+using WORD = unsigned int;
+using pChar = char *;
+using field = char [50];
+
+* Unions
+* Anonymous unions
+
+Lesson 4 ..Classes (I)
+Classes are an expanded concept of data structures:
+like data structures, they can contain data members, but they can also contain functions as members.
+An object is an instantiation of a class. In terms of variables, a class would be the type,
+and an object would be the variable.Classes are defined using either keyword class or keyword struct,
+class class_name {
+  access_specifier_1: // private protected public
+    member1;  // data or function
+  access_specifier_2:
+    member2;
+  ...
+} object_names; //optional
+
+private members of a class are accessible only from within other members of the same class (or from their "friends").
+protected members are accessible from other members of the same class (or from their "friends"), but also from members
+ of their derived classes.
+Finally, public members are accessible from anywhere where the object is visible.
+
+class Rectangle {
+    int width, height;
+  public:
+    void set_values (int,int);
+    int area (void);
+} rect;
+
+Declares a class (i.e., a type) called Rectangle and an object (i.e., a variable) of this class, called rect.
+By default, all members of a class declared with the class keyword have private access for all its members.
+
+After the declarations of Rectangle and rect, any of the public members of object rect can be accessed
+as if they were normal functions or normal variables, by simply inserting a dot (.) between object name and member name.
+
+rect.set_values (3,4);
+myarea = rect.area();
+
+
+* Constructors
+ which is automatically called whenever a new object of this class is created, allowing the class to initialize member
+ variables or allocate storage.This constructor function is declared just like a regular member function, but with a
+ name that matches the class name and without any return type; not even void.
+
+ Constructors never return values, they simply initialize the object.
+
+* Overloading constructors
+Like any other function, a constructor can also be overloaded with different versions taking different parameters:
+ with a different number of parameters and/or parameters of different types.
+
+* Uniform initialization
+The way of calling constructors by enclosing their arguments in parentheses, is known as functional form. eg:
+Rectangle::Rectangle () {
+  width = 5;
+  height = 5;
+}
+Rectangle::Rectangle (int a, int b) {
+  width = a;
+  height = b;
+}
+
+C++ introduced the possibility of constructors to be called using uniform initialization,
+which essentially is the same as the functional form, but using braces ({}) instead of parentheses (()):
+
+class_name object_name { value, value, value, ... }
+class Circle {
+    double radius;
+  public:
+    Circle(double r) { radius = r; }
+    double circum() {return 2*radius*3.14159265;}
+};
+
+int main () {
+  Circle foo (10.0);   // functional form
+  Circle bar = 20.0;   // assignment init.
+  Circle baz {30.0};   // uniform init.
+  Circle qux = {40.0};
+  return 0;
+  }
+
+*Member initialization in constructors
+When a constructor is used to initialize other members, these other members can be initialized directly,
+ without resorting to statements in its body.
+instead of initializing members like this
+Rectangle::Rectangle (int x, int y) { width=x; height=y; }
+
+it could also be defined using member initialization as:
+Rectangle::Rectangle (int x, int y) : width(x) { height=y; }
+Or even:
+Rectangle::Rectangle (int x, int y) : width(x), height(y) { }
+
+*Pointers to classes
+Rectangle * prect;
+is a pointer to an object of class Rectangle
+
+*Classes defined with struct and union
+ The only difference between both is that members of classes declared with the keyword struct have public access by default.
+
+2. Classes (II)
+
+* Overloading operators
+Overloadable operators
++    -    *    /    =    <    >    +=   -=   *=   /=   <<   >>
+<<=  >>=  ==   !=   <=   >=   ++   --   %    &    ^    !    |
+~    &=   ^=   |=   &&   ||   %=   []   ()   ,    ->*  ->   new
+delete    new[]     delete[]
+
+CVector operator + (const CVector&);
+
+Once declared, this function can be called either implicitly using the operator, or explicitly using its functional name:
+c = a + b;
+c = a.operator+ (b);
+
+The parameter expected for a member function overload for operations such as operator+ is naturally
+ the operand to the right hand side of the operator. eg:
+ CVector CVector::operator+ (const CVector& param) {
+  CVector temp;
+  temp.x = x + param.x;
+  temp.y = y + param.y;
+  return temp;
+}
+Arithmetic Operators: These are the operators used to perform arithmetic/mathematical operations on operands.
+ Examples: (+, -, *, /, %,++,--). Arithmetic operator are of two types:
+Unary Operators: Operators that operates or works with a single operand are unary operators. For example: (++ , --)
+Binary Operators: Operators that operates or works with two operands are binary operators. For example: (+ , -, * , /)
+
+a is parameter @ is operator:
+@a	+ - * & ! ~ ++ --	A::operator@()	operator@(A)
+a@	++ --	A::operator@(int)	operator@(A,int)
+a@b	+ - * / % ^ & | < > == != <= >= << >> && || ,	A::operator@(B)	operator@(A,B)
+a@b	= += -= *= /= %= ^= &= |= <<= >>= []	A::operator@(B)	-
+
+* The keyword this
+The keyword this represents a pointer to the object whose member function is being executed. It is used within a
+class's member function to refer to the object itself.
+
+It is also frequently used in operator= member functions that return objects by reference. Following with the examples
+on cartesian vector seen before, its operator= function could have been defined as:
+CVector& CVector::operator= (const CVector& param)
+{
+  x=param.x;
+  y=param.y;
+  return *this;
+}
+
+*Static members
+
+A class can contain static members, either data or functions.
+
+A static data member of a class is also known as a "class variable", because there is only one common variable for
+all the objects of that same class, sharing the same value: its value is not different from one object of this class to another.
+
+Because it is a common variable value for all the objects of the same class, it can be referred
+ to as a member of any object of that class or even directly by the class name (of course this is only valid for static members):
+cout << a.n;
+cout << Dummy::n;
+
+int get() const {return x;}        // const member function
+const int& get() {return x;}       // member function returning a const&
+const int& get() const {return x;} // const member function returning a const
+
+* Const member functions
+When an object of a class is qualified as a const object:
+const MyClass myobject;
+
+
+* Class templates
+
+3. Special members
+Special member functions are member functions that are implicitly defined as member of classes under certain circumstances.
+ There are six:
+ Member function	     typical form for class C:
+ Default constructor	 C::C();
+ Destructor           C::~C();
+ Copy constructor	    C::C (const C&);
+ Copy assignment	    C& operator= (const C&);
+ Move constructor	    C::C (C&&);
+ Move assignment	   C& operator= (C&&);
+
+* Default constructor
+ If a class definition has no constructors, the compiler assumes the class to have an implicitly defined default constructor.
+But as soon as a class has some constructor taking any number of parameters explicitly declared, the compiler no longer provides
+an implicit default constructor,
+
+*Destructor
+Destructors fulfill the opposite functionality of constructors: They are responsible for the necessary cleanup needed by a
+class when its lifetime ends.A destructor is a member function very similar to a default constructor: it takes no arguments
+and returns nothing, not even void. It also uses the class name as its own name, but preceded with a tilde sign (~):
+~default_Constructor_name () {delete ptr;}
+
+*Copy constructor
+
+
+4. Friendship and inheritance
+Friends are functions or classes declared with the friend keyword.
+
+Other language features:
+1. Exception
+*Exception specification
+
+2. Preprocessor directives
+*macro definitions (#define, #undef)
+
+#define TABLE_SIZE 100
+int table1[TABLE_SIZE];
+int table2[TABLE_SIZE];
+#define getmax(a,b) a>b?a:b
+#if TABLE_SIZE>200
+#undef TABLE_SIZE
+#define TABLE_SIZE 200
+
+#elif TABLE_SIZE<50
+#undef TABLE_SIZE
+#define TABLE_SIZE 50
+
+#else
+#undef TABLE_SIZE
+#define TABLE_SIZE 100
+#endif
+
+
+Source file inclusion (#include)
+#include <header>
+#include "file"
