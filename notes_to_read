@@ -21,10 +21,12 @@ A variable name cannot begin with a number.
 Variable names cannot begin with an uppercase character.
 A variable name cannot be a keyword. For example, int is a keyword that is used to denote integers.
 A variable name can start with an underscore. However, it's not considered a good practice.
+Note: We should try to give meaningful names to variables. For example, first_name is a better variable name than fn.
 
-types :  char (least 8 bits), int (least 8 bits){short 16 bits, long 32, long long 64},float (32 bits, long 64 bits), boolean
+types of variables (C++ Literals) :  char (least 8 bits), int (least 8 bits){short 16 bits, long 32, long long 64},float (32 bits, long 64 bits) Note: E-5 = 10^-5, boolean
 
 1 byte = 8 bits = 8 bits have 2^8 notes = 256 unique re-presentable values.
+
 Signed/Unsigned Variable Type of Integer:
 An unsigned variable type of int can hold zero and positive numbers, and a signed int holds negative, zero and positive numbers.
 
@@ -41,6 +43,15 @@ In the case of chars, which are only 1 byte, the range of an unsigned char is 0 
 Boolean type	bool
 Void type	void	no storage
 Null pointer	decltype(nullptr)
+
+C++ Constants:
+In C++, we can create variables whose value cannot be changed. For that, we use the const keyword. Here's an example:
+
+const int LIGHT_SPEED = 299792458;
+LIGHT_SPEED = 2500 // Error! LIGHT_SPEED is a constant.
+Here, we have used the keyword const to declare a constant named LIGHT_SPEED. If we try to change the value of LIGHT_SPEED, we will get an error.
+
+A constant can also be created using the #define preprocessor directive.
 
 Initialization of variables:
 3 different types :
