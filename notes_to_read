@@ -9,7 +9,20 @@ to run:
 ./example_program
 
 
-Chapter 2. Variables and types :  char (least 8 bits), int (least 8 bits){short 16 bits, long 32, long long 64},float (32 bits, long 64 bits), boolean
+Chapter 2. Variables:
+In programming, a variable is a container (storage area) to hold data.
+To indicate the storage area, each variable should be given a unique name (identifier). For example,
+
+int age = 14;
+
+Rules for naming a variable:
+A variable name can only have alphabets, numbers and the underscore _.
+A variable name cannot begin with a number.
+Variable names cannot begin with an uppercase character.
+A variable name cannot be a keyword. For example, int is a keyword that is used to denote integers.
+A variable name can start with an underscore. However, it's not considered a good practice.
+
+types :  char (least 8 bits), int (least 8 bits){short 16 bits, long 32, long long 64},float (32 bits, long 64 bits), boolean
 
 1 byte = 8 bits = 8 bits have 2^8 notes = 256 unique re-presentable values.
 Signed/Unsigned Variable Type of Integer:
